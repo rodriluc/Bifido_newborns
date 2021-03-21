@@ -6,6 +6,11 @@
 * [Dependencies](#dependencies)
 * [Repo description](#repo-description)
 	* [Figure 1](#figure-1)
+	* [Figure 2](#figure-2)
+	* [Figure 3](#figure-3)
+	* [Figure 4](#figure-4)
+	* [Figure 5](#figure-5)
+	* [Figure 6](#figure-6)
 
 ## General info
 This project used multiple omics data:
@@ -20,12 +25,6 @@ Project is created with:
 * Python version: 3.8
 
 ## Repo description
-- */Figure 1* 
-- */Figure 2* 
-- */Figure 3* 
-- */Figure 4* 
-- */Figure 5* 
-- */Figure 6*
 
 ### Figure 1 
 - ```cell_corr.R``` uses cell abundance dataframe built from Grid that is sub-setted by grouped days for correlation
