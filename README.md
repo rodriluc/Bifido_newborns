@@ -5,7 +5,7 @@
 * [General info](#general-info)
 * [Dependencies](#dependencies)
 * [Repo description](#repo-description)
-* [Figure 1](#figure-1)
+** [Figure 1](#figure-1)
 
 ## General info
 This project used multiple omics data:
