@@ -5,7 +5,7 @@
 * [General info](#general-info)
 * [Dependencies](#dependencies)
 * [Repo description](#repo-description)
-* [Figures](#figures)
+* [Figure 1](#figure-1)
 
 ## General info
 This project used multiple omics data:
@@ -27,7 +27,6 @@ Project is created with:
 - */Figure 5* 
 - */Figure 6*
 
-## Figures
-### Spearman Correlation 
+### Figure 1 
 - ```cell_corr.R``` uses cell abundance dataframe built from Grid that is sub-setted by grouped days for correlation
 - Option to re-order one matrix in accordance to the other for comparison purposes
