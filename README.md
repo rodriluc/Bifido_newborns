@@ -1,5 +1,5 @@
-# Bifidobacteria-mediated immune system imprinting early in life (Henrick et al.) 
-## Born immune data analyses 
+# Born immune data analyses 
+## Bifidobacteria-mediated immune system imprinting early in life (Henrick et al.) 
 
 ## Table of contents
 * [General info](#general-info)
