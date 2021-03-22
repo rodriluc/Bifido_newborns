@@ -29,3 +29,8 @@ Project is created with:
 ### Figure 1 
 - ```cell_corr.R``` uses cell abundance dataframe built from Grid that is sub-setted by grouped days for correlation
 - Option to re-order one matrix in accordance to the other for comparison purposes
+
+### Figure 2
+- 2A: PCoA from bray-curtis distance matrix at family level created in R using ... Script available in `figure2/2A.R`.
+- 2B: areaplot of family level relative abundances created in python using `pandas`, `numpy`, `matplotlib` and `seaborn`. Guide available in `figure2/2B.html`.
+- 2C: ...plot of Bifidobacterium species relative abundance trajectory per individual. Created in R using ... Script available in `figure2/2C.R`. 
