@@ -5,11 +5,7 @@ library(data.table)
 library(MAST)
 library(circlize)
 library(cowplot)
-library(SingleCellExperiment)
-library(zinbwave)
-library(BiocParallel)
 library(doMC)
-library(scamp)
 library(reticulate)
 library(RColorBrewer)
 
@@ -22,21 +18,13 @@ BiocManager::install("BiocParallel")
 BiocManager::install("scamp")
 
 ##-- Set working directory
-setwd('~/Documents/BabyBifido/BD_Rhapsody_NaiveCD4T/Results_subsampled0.2')
+setwd('~/Documents/BabyBifido/BD_Rhapsody_NaiveCD4T/Results')
 
 ##-- Data Import
-Abseq.cartridge_1 <- fread(input = 'Combined_P17458_1001sub0.2_DBEC_MolsPerCell_withSampleTag.csv') 
-Abseq.cartridge_2 <- fread(input = 'Combined_P17458_1002sub0.2_DBEC_MolsPerCell_withSampleTag.csv') 
-Abseq.cartridge_3 <- fread(input = 'Combined_P17458_1003sub0.2_DBEC_MolsPerCell_withSampleTag.csv') 
-Abseq.cartridge_4 <- fread(input = 'Combined_P17458_1004sub0.2_DBEC_MolsPerCell_withSampleTag.csv') 
-
-##-- Set working directory
-#setwd('~/Documents/BabyBifido/BD_Rhapsody_NaiveCD4T/Results')
-
-##-- Data Import
-#Abseq.cartridge_2 <- fread(input = 'Combined_P17458_1002_DBEC_MolsPerCell_withSampleTag.csv') 
-#Abseq.cartridge_3 <- fread(input = 'Combined_P17458_1003_DBEC_MolsPerCell_withSampleTag.csv') 
-#Abseq.cartridge_4 <- fread(input = 'Combined_P17458_1004_DBEC_MolsPerCell_withSampleTag.csv') 
+Abseq.cartridge_1 <- fread(input = 'Combined_P17458_1001_DBEC_MolsPerCell_withSampleTag.csv') 
+Abseq.cartridge_2 <- fread(input = 'Combined_P17458_1002_DBEC_MolsPerCell_withSampleTag.csv') 
+Abseq.cartridge_3 <- fread(input = 'Combined_P17458_1003_DBEC_MolsPerCell_withSampleTag.csv') 
+Abseq.cartridge_4 <- fread(input = 'Combined_P17458_1004_DBEC_MolsPerCell_withSampleTag.csv') 
 
 ###--- Data processing
 #- RNA matrices
@@ -115,7 +103,6 @@ Abseq.RNA.rawData <- t(Abseq.RNA[, -c('Sample_Name', 'Sample_Tag', 'Cell_ID', 'B
 colnames(Abseq.RNA.rawData) <- paste('cell', 1:dim(Abseq.RNA.rawData)[2], sep = '-')
 PBMC.RNA2 <- CreateSeuratObject(counts = Abseq.RNA.rawData, min.cells = 3, min.features = 50, assay = 'RNA', project = 'Abseq bifido 2020')
 PBMC.RNA2 # 255 genes across 55,421 cells 
-#write.csv(Abseq.RNA.rawData, file='Abseq.RNA.rawData.csv')
 
 #- Add features - meta.data
 PBMC.RNA2@meta.data$cell.id <- rownames(PBMC.RNA2@meta.data)
@@ -163,7 +150,6 @@ PBMC.RNA2@meta.data$Usamples <- plyr::mapvalues(x = PBMC.RNA2@meta.data$sample.t
                                                    "Th17_BIFIDOneg1:100",  "Th17_BIFIDOpos1:333", "Th1_BIFIDOneg_1:100", "iTreg_BIFIDOpos1:333", "iTreg_BIFIDOneg1:100", 
                                                    "Th0_BIFIDOneg1:100", "Th2_BIFIDOneg1:100", "Th0_BIFIDOneg1:333", "IFNb_BIFIDOneg1:333", "Th17_BIFIDOneg1:333", 
                                                    "Th1_BIFIDOneg1:333", "Th2_BIFIDOneg1:333","iTreg_BIFIDOneg1:333", "IFNb_BIFIDOneg1:100"))
-
 PBMC.RNA2@meta.data$bifido_conc <- plyr::mapvalues(x = PBMC.RNA2@meta.data$sample.tag, 
                                                from = unique(PBMC.RNA2@meta.data$sample.tag), 
                                                to = c("CTRL", "CTRL", "Multiplet", "CTRL", "BIFIDOpos1:100", "CTRL", "CTRL", "CTRL", 
@@ -197,10 +183,9 @@ PBMC.RNA2 <- NormalizeData(object = PBMC.RNA2, assay = 'RNA', normalization.meth
 #- Ab Normalization
 PBMC.RNA2 <- NormalizeData(object = PBMC.RNA2, assay = 'Ab', normalization.method = 'CLR')
 
-
 #- Highly variable genes
 PBMC.RNA2 <- FindVariableFeatures(object = PBMC.RNA2, verbose = FALSE, selection.method = "vst")
-PBMC.RNA2@assays$RNA@var.features # 255 genes
+PBMC.RNA2@assays$RNA@var.features 
 
 ####### Identify the 20 most highly variable genes
 top20 <- head(x = VariableFeatures(object = PBMC.RNA2), 
@@ -233,10 +218,9 @@ sum(GetAssayData(object = PBMC.RNA2, slot = "data", assay='RNA')['HLA-C.rna',]>0
 
 ggplot(PBMC.RNA2@meta.data, aes(cytokine_culture))+geom_bar(stat="count")
 
-#write.csv(GetAssayData(, file='GAPDH.csv')
 #- PCA
 PBMC.RNA2 <- RunPCA(object = PBMC.RNA2, assay = 'RNA')
-ElbowPlot(object = PBMC.RNA2, ndims = 50) # 30 PCs
+ElbowPlot(object = PBMC.RNA2, ndims = 50) 
 nPC <- 30
 
 #- Clustering
@@ -430,9 +414,6 @@ markers.RNA <- FindAllMarkers(object = PBMC.RNA2,
 top10RNA <- markers.RNA %>% 
   group_by(cluster) %>%
   top_n(n = 10)
-#write.csv(top10RNA, file='clusters_markers3.csv')
-
-#DoHeatmap(object = PBMC.RNA2, features = top10RNA$gene, size = 10, label = T)
 
 cluster0.markers <- c('IL12RB2.rna','IL18RAP.rna','IL18R1.rna','TK1.rna','TYMS.rna',
                       'S1PR1.rna','STAT1.rna','PTTG2.rna','IL32.rna','NINJ2.rna')
@@ -785,147 +766,3 @@ plots <- VlnPlot(immune.combinedAb, features = 'GAPDH.rna' , split.by = "bifido_
                  pt.size = 1, combine = FALSE) 
 wrap_plots(plots = plots, ncol = 1)
 RidgePlot(immune.combined, features = features ,  group.by = "cytokine_culture") 
-
-###############################################
-# building trajectories with Monocle3
-remotes::install_github('satijalab/seurat-wrappers')
-if (!requireNamespace("BiocManager", quietly = TRUE))
-  install.packages("BiocManager")
-BiocManager::install(version = "3.10")
-BiocManager::install(c('BiocGenerics', 'DelayedArray', 'DelayedMatrixStats',
-                       'limma', 'S4Vectors', 'SingleCellExperiment',
-                       'SummarizedExperiment', 'batchelor', 'Matrix.utils'))
-devtools::install_github('cole-trapnell-lab/leidenbase')
-devtools::install_github('cole-trapnell-lab/monocle3')
-devtools::install_github("timoast/signac", ref = "develop")
-if (!requireNamespace("BiocManager", quietly = TRUE))
-  install.packages("BiocManager")
-BiocManager::install()
-setRepositories(ind=1:2)
-BiocManager::install("Signac")
-
-library(Signac)
-library(SeuratWrappers)
-library(monocle3)
-library(Matrix)
-library(ggplot2)
-library(patchwork)
-set.seed(1234)
-
-PBMC.RNA_gdTremoved_conc100.cds <- as.cell_data_set(PBMC.RNA_gdTremoved_conc100)
-PBMC.RNA_gdTremoved_conc100.cds <- cluster_cells(cds = PBMC.RNA_gdTremoved_conc100.cds, reduction_method = "UMAP")
-PBMC.RNA_gdTremoved_conc100.cds <- learn_graph(PBMC.RNA_gdTremoved_conc100.cds, use_partition = TRUE)
-
-PBMC.RNA_gdTremoved_conc.cds <- as.cell_data_set(PBMC.RNA_gdTremoved_conc)
-PBMC.RNA_gdTremoved_conc.cds <- cluster_cells(cds = PBMC.RNA_gdTremoved_conc.cds, reduction_method = "UMAP")
-PBMC.RNA_gdTremoved_conc.cds <- learn_graph(PBMC.RNA_gdTremoved_conc.cds, use_partition = TRUE)
-
-# order cells
-cc_root <- PBMC.RNA_gdTremoved_conc.cds@colData$cytokine_culture
-PBMC.RNA_gdTremoved_conc.cds <- order_cells(PBMC.RNA_gdTremoved_conc.cds, reduction_method = "UMAP")#, root_pr_nodes = c("Th0")) #root_cells = cc_root)
-
-PBMC.RNA_gdTremoved_conc100.cds <- order_cells(PBMC.RNA_gdTremoved_conc100.cds, reduction_method = "UMAP")
-
-# plot trajectories colored by pseudotime
-plot_cells(
-  cds = PBMC.RNA_gdTremoved_conc100.cds,
-  color_cells_by = "pseudotime",
-  #color_cells_by = "pseudotime",
-  show_trajectory_graph = TRUE,
-  label_cell_groups=FALSE,
-  label_leaves=TRUE,
-  label_branch_points=TRUE,
-  graph_label_size=1.5
-)
-
-### 3D
-cds_3d <- reduce_dimension(PBMC.RNA_gdTremoved_conc.cds, max_components = 3)
-cds_3d <- cluster_cells(cds_3d)
-cds_3d <- learn_graph(cds_3d)
-cds_3d <- order_cells(cds_3d) #, root_pr_nodes=get_earliest_principal_node(PBMC.RNA_gdTremoved_conc.cds))
-
-cds_3d_plot_obj <- plot_cells_3d(cds_3d, color_cells_by="pseudotime")
-
-####### separate bifido+/-
-# 1:333 concentration
-Idents(PBMC.RNA_gdTremoved_conc) <- "bifido"
-PBMC.RNA_gdTremoved_conc_bifpos <- subset(x = PBMC.RNA_gdTremoved_conc, idents = 'BIFIDOpos') 
-PBMC.RNA_gdTremoved_conc_bifneg <- subset(x = PBMC.RNA_gdTremoved_conc, idents = 'BIFIDOneg') 
-
-PBMC.RNA_gdTremoved_conc_bifpos.cds <- as.cell_data_set(PBMC.RNA_gdTremoved_conc_bifpos)
-PBMC.RNA_gdTremoved_conc_bifneg.cds <- as.cell_data_set(PBMC.RNA_gdTremoved_conc_bifneg)
-
-PBMC.RNA_gdTremoved_conc_bifpos.cds <- cluster_cells(PBMC.RNA_gdTremoved_conc_bifpos.cds)
-PBMC.RNA_gdTremoved_conc_bifpos.cds <- learn_graph(PBMC.RNA_gdTremoved_conc_bifpos.cds)
-PBMC.RNA_gdTremoved_conc_bifpos.cds <- order_cells(PBMC.RNA_gdTremoved_conc_bifpos.cds, reduction_method = "UMAP")#, root_pr_nodes = c("Th0")) #root_cells = cc_root)
-
-PBMC.RNA_gdTremoved_conc_bifneg.cds <- cluster_cells(PBMC.RNA_gdTremoved_conc_bifneg.cds)
-PBMC.RNA_gdTremoved_conc_bifneg.cds <- learn_graph(PBMC.RNA_gdTremoved_conc_bifneg.cds)
-PBMC.RNA_gdTremoved_conc_bifneg.cds <- order_cells(PBMC.RNA_gdTremoved_conc_bifneg.cds, reduction_method = "UMAP")#, root_pr_nodes = c("Th0")) #root_cells = cc_root)
-
-# 1:100 concentration
-Idents(PBMC.RNA_gdTremoved_conc100) <- "bifido"
-PBMC.RNA_gdTremoved_conc100_bifpos <- subset(x = PBMC.RNA_gdTremoved_conc100, idents = 'BIFIDOpos') 
-PBMC.RNA_gdTremoved_conc100_bifneg <- subset(x = PBMC.RNA_gdTremoved_conc100, idents = 'BIFIDOneg') 
-
-PBMC.RNA_gdTremoved_conc100_bifpos.cds <- as.cell_data_set(PBMC.RNA_gdTremoved_conc100_bifpos)
-PBMC.RNA_gdTremoved_conc100_bifneg.cds <- as.cell_data_set(PBMC.RNA_gdTremoved_conc100_bifneg)
-
-PBMC.RNA_gdTremoved_conc100_bifpos.cds <- cluster_cells(PBMC.RNA_gdTremoved_conc100_bifpos.cds)
-PBMC.RNA_gdTremoved_conc100_bifpos.cds <- learn_graph(PBMC.RNA_gdTremoved_conc100_bifpos.cds)
-PBMC.RNA_gdTremoved_conc100_bifpos.cds <- order_cells(PBMC.RNA_gdTremoved_conc100_bifpos.cds, reduction_method = "UMAP")
-
-PBMC.RNA_gdTremoved_conc100_bifneg.cds <- cluster_cells(PBMC.RNA_gdTremoved_conc100_bifneg.cds)
-PBMC.RNA_gdTremoved_conc100_bifneg.cds <- learn_graph(PBMC.RNA_gdTremoved_conc100_bifneg.cds)
-PBMC.RNA_gdTremoved_conc100_bifneg.cds <- order_cells(PBMC.RNA_gdTremoved_conc100_bifneg.cds, reduction_method = "UMAP")
-
-# plot trajectories colored by pseudotime
-plot_cells(
-  cds = PBMC.RNA_gdTremoved_conc100_bifneg.cds,
-  color_cells_by = "pseudotime",
-  #color_cells_by = "pseudotime",
-  #show_trajectory_graph = TRUE
-  label_cell_groups=FALSE,
-  label_leaves=TRUE,
-  label_branch_points=TRUE,
-  graph_label_size=1.5
-)
-
-###################### remove IFNb
-Idents(PBMC.RNA_gdTremoved_conc100) <- "cytokine_culture"
-PBMC.RNA_gdTremoved_conc100_IFNb <- subset(x = PBMC.RNA_gdTremoved_conc100, idents = 'IFNb', invert=TRUE) 
-
-PBMC.RNA_gdTremoved_conc100_IFNb.cds <- as.cell_data_set(PBMC.RNA_gdTremoved_conc100_IFNb)
-
-PBMC.RNA_gdTremoved_conc100_IFNb.cds <- cluster_cells(PBMC.RNA_gdTremoved_conc100_IFNb.cds)
-PBMC.RNA_gdTremoved_conc100_IFNb.cds <- learn_graph(PBMC.RNA_gdTremoved_conc100_IFNb.cds)
-PBMC.RNA_gdTremoved_conc100_IFNb.cds <- order_cells(PBMC.RNA_gdTremoved_conc100_IFNb.cds, reduction_method = "UMAP")
-
-### bifido separation
-Idents(PBMC.RNA_gdTremoved_conc100_bifpos) <- "cytokine_culture"
-PBMC.RNA_gdTremoved_conc100_bifpos_IFNb <- subset(x = PBMC.RNA_gdTremoved_conc100_bifpos, idents = 'IFNb', invert=TRUE) 
-Idents(PBMC.RNA_gdTremoved_conc100_bifneg) <- "cytokine_culture"
-PBMC.RNA_gdTremoved_conc100_bifneg_IFNb <- subset(x = PBMC.RNA_gdTremoved_conc100_bifneg, idents = 'IFNb', invert=TRUE) 
-
-PBMC.RNA_gdTremoved_conc100_bifpos_IFNb.cds <- as.cell_data_set(PBMC.RNA_gdTremoved_conc100_bifpos_IFNb)
-PBMC.RNA_gdTremoved_conc100_bifpos_IFNb.cds <- cluster_cells(PBMC.RNA_gdTremoved_conc100_bifpos_IFNb.cds)
-PBMC.RNA_gdTremoved_conc100_bifpos_IFNb.cds <- learn_graph(PBMC.RNA_gdTremoved_conc100_bifpos_IFNb.cds)
-PBMC.RNA_gdTremoved_conc100_bifpos_IFNb.cds <- order_cells(PBMC.RNA_gdTremoved_conc100_bifpos_IFNb.cds, reduction_method = "UMAP")
-
-PBMC.RNA_gdTremoved_conc100_bifneg_IFNb.cds <- as.cell_data_set(PBMC.RNA_gdTremoved_conc100_bifneg_IFNb)
-PBMC.RNA_gdTremoved_conc100_bifneg_IFNb.cds <- cluster_cells(PBMC.RNA_gdTremoved_conc100_bifneg_IFNb.cds)
-PBMC.RNA_gdTremoved_conc100_bifneg_IFNb.cds <- learn_graph(PBMC.RNA_gdTremoved_conc100_bifneg_IFNb.cds)
-PBMC.RNA_gdTremoved_conc100_bifneg_IFNb.cds <- order_cells(PBMC.RNA_gdTremoved_conc100_bifneg_IFNb.cds, reduction_method = "UMAP")
-
-# plot trajectories colored by pseudotime
-plot_cells(
-  cds = PBMC.RNA_gdTremoved_conc100_bifneg_IFNb.cds,
-  color_cells_by = "cytokine_culture",
-  #color_cells_by = "pseudotime",
-  #show_trajectory_graph = TRUE
-  label_cell_groups=FALSE,
-  label_leaves=TRUE,
-  label_branch_points=TRUE,
-  graph_label_size=1.5
-)
-
