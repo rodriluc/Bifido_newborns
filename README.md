@@ -38,5 +38,5 @@ Project is created with:
 
 ## Figure 6
 ### Targeted BD Rhapsody data
-- 2B & 2D: UMAP of each cytokine condition and volcano plot displaying differentially expresed mRNA as well as processing of output files found in ```figure6/BD_CD4Tpolarization_exp1.R```
-- 2F: Dot plot of different conditions for all cytokine cultures as well as processing of output files found in ```figure6/BD_CD4Tpolarization_exp2.R```
+- 6B & 6D: UMAP of each cytokine condition and volcano plot displaying differentially expresed mRNA as well as processing of output files found in ```figure6/BD_CD4Tpolarization_exp1.R```
+- 6F: Dot plot of different conditions for all cytokine cultures as well as processing of output files found in ```figure6/BD_CD4Tpolarization_exp2.R```
