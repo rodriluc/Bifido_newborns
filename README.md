@@ -31,6 +31,12 @@ Project is created with:
 - Option to re-order one matrix in accordance to the other for comparison purposes
 
 ### Figure 2
+## Metagenomics
 - 2A: PCoA from bray-curtis distance matrix at family level created in R using ... Script available in `figure2/2A.R`.
 - 2B: areaplot of family level relative abundances created in python using `pandas`, `numpy`, `matplotlib` and `seaborn`. Guide available in `figure2/2B.html`.
 - 2C: ...plot of Bifidobacterium species relative abundance trajectory per individual. Created in R using ... Script available in `figure2/2C.R`. 
+
+### Figure 6
+## Targeted BD Rhapsody data
+- 2B & 2D: UMAP of each cytokine condition and volcano plot displaying differentially expresed mRNA as well as processing of output files found in ```figure6/BD_CD4Tpolarization_exp1.R```
+- 2F: Dot plot of different conditions for all cytokine cultures as well as processing of output files found in ```figure6/BD_CD4Tpolarization_exp2.R```
