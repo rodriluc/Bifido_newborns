@@ -1,4 +1,4 @@
-# IMPRINT and Born immune data analyses 
+# IMPRINT & Born immune data analyses 
 ## Bifidobacteria-mediated immune system imprinting early in life (Henrick et al.) 
 
 ## Table of contents
