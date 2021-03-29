@@ -298,3 +298,4 @@ DE_Th2 <- FindMarkers(cyto_cult_Th2, ident.1 = "1mM_ILA", ident.2 = "CTRL", verb
 head(DE_Th2, n = 30)
 DE_Th0 <- FindMarkers(cyto_cult_Th0, ident.1 = "1mM_ILA", ident.2 = "CTRL", verbose = FALSE, min.diff.pct = 0.1)
 head(DE_Th0, n = 30)
+ 
