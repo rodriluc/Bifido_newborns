@@ -32,14 +32,14 @@ Project is created with:
 
 ## Figure 2
 ### Metagenomics
-- 5C: Radar plot of 0-1 normalized cytokine medians created in R using `tidyverse`, `ggsignif`, `ggiraphExtra`, `ggpubr` and `forcats`. Script available in `figure5/Cytokines_and_Metagenomics.R`.
-- 5D: Heatmap of cytokine and bacterial family relative abundances created in R using `tidyverse`, `RColorBrewer`, `ggsignif`, `ggpubr`, `psych` and `forcats`. Guide available in `figure5/Cytokines_and_Metagenomics.R`.
-
-## Figure 5
-### Cytokines and Metagenomics
 - 2A: PCoA from bray-curtis distance matrix at family level created in R using ... Script available in `figure2/2A.R`.
 - 2B: areaplot of family level relative abundances created in python using `pandas`, `numpy`, `matplotlib` and `seaborn`. Guide available in `figure2/2B.html`.
 - 2C: ...plot of Bifidobacterium species relative abundance trajectory per individual. Created in R using ... Script available in `figure2/2C.R`. 
+
+## Figure 5
+### Cytokines and Metagenomics
+- 5C: Radar plot of 0-1 normalized cytokine medians created in R using `tidyverse`, `ggsignif`, `ggiraphExtra`, `ggpubr` and `forcats`. Script available in `figure5/Cytokines_and_Metagenomics.R`.
+- 5D: Heatmap of cytokine and bacterial family relative abundances created in R using `tidyverse`, `RColorBrewer`, `ggsignif`, `ggpubr`, `psych` and `forcats`. Guide available in `figure5/Cytokines_and_Metagenomics.R`.
 
 ## Figure 6
 ### Targeted BD Rhapsody data
