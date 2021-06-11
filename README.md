@@ -34,10 +34,10 @@ Project is created with:
 
 ## Figure 5
 ### Cytokines and Metagenomics
-- 5C: Radar plot of 0-1 normalized cytokine medians created in R using `tidyverse`, `ggsignif`, `ggiraphExtra`, `ggpubr` and `forcats`. Script available in `figure5/Cytokines_and_Metagenomics.R`.
-- 5D: Heatmap of cytokine and bacterial family relative abundances created in R using `tidyverse`, `RColorBrewer`, `ggsignif`, `ggpubr`, `psych` and `forcats`. Guide available in `figure5/Cytokines_and_Metagenomics.R`.
+- 5C: Radar plot of 0-1 normalized cytokine medians created in R using `tidyverse`, `ggsignif`, `ggiraphExtra`, `ggpubr` and `forcats`. Script available in `Cytokines_and_Metagenomics.R`.
+- 5D: Heatmap of cytokine and bacterial family relative abundances created in R using `tidyverse`, `RColorBrewer`, `ggsignif`, `ggpubr`, `psych` and `forcats`. Guide available in `Cytokines_and_Metagenomics.R`.
 
 ## Figure 6
 ### Targeted BD Rhapsody data
-- 6B & 6D: UMAP of each cytokine condition and volcano plot displaying differentially expresed mRNA as well as processing of output files found in ```BD_CD4Tpolarization_exp1.R```
-- 6F: Dot plot of different conditions for all cytokine cultures as well as processing of output files found in ```BD_CD4Tpolarization_exp2.R```
+- 6B & 6D: UMAP of each cytokine condition and volcano plot displaying differentially expresed mRNA as well as processing of output files found in ```figure6/BD_CD4Tpolarization_exp1.R```
+- 6F: Dot plot of different conditions for all cytokine cultures as well as processing of output files found in ```figure6/BD_CD4Tpolarization_exp2.R```
